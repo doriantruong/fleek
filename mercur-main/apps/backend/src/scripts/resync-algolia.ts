@@ -2,6 +2,13 @@ import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils";
 import { AlgoliaEvents } from "@mercurjs/framework";
 
 export default async function main({ container }) {
+  console.log("Starting Algolia resync...");
+
+  const failSafe = setTimeout(() => {
+    console.warn("Timeout reached, forcing exit.");
+    process.exit(0);
+  }, 15000);
+
   const query = container.resolve(ContainerRegistrationKeys.QUERY);
   const eventBus = container.resolve(Modules.EVENT_BUS);
 
@@ -25,7 +32,6 @@ export default async function main({ container }) {
   });
 
   console.log("Done");
-
-  // Ensure the process exits after emitting the event
+  clearTimeout(failSafe);
   process.exit(0);
 }
