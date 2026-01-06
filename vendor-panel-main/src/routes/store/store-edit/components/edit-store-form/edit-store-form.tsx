@@ -234,7 +234,7 @@ export const EditStoreForm = ({ seller }: { seller: StoreVendor }) => {
             />
           </div>
         </RouteDrawer.Body>
-        <RouteDrawer.Footer>
+        <RouteDrawer.Footer className="sticky bottom-0 bg-ui-bg-base border-t border-ui-border px-4 py-3">
           <div className="flex items-center justify-end gap-x-2">
             <RouteDrawer.Close asChild>
               <Button size="small" variant="secondary">
