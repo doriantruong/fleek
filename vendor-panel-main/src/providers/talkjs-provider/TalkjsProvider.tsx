@@ -26,6 +26,7 @@ const ProviderContent = ({
       name: seller?.name || "",
       email: seller?.email || null,
       photoUrl: seller?.photo || "/talkjs-placeholder.jpg",
+      role: seller?.role || "seller",
     })
   }, [seller])
 

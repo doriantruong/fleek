@@ -58,16 +58,27 @@ export const uploadFilesQuery = async (files: any[]) => {
     formData.append('files', file);
   }
 
-  return await fetch(`${backendUrl}/vendor/uploads`, {
+  const res = await fetch(`${backendUrl}/vendor/uploads`, {
     method: 'POST',
     body: formData,
     headers: {
       authorization: `Bearer ${token}`,
       'x-publishable-api-key': publishableApiKey
     }
-  })
-    .then(res => res.json())
-    .catch(() => null);
+  });
+
+  if (!res.ok) {
+    let message = 'Upload failed';
+    try {
+      const data = await res.json();
+      message = data?.message || message;
+    } catch (e) {
+      /* ignore parse errors */
+    }
+    throw new Error(message);
+  }
+
+  return res.json();
 };
 
 export const fetchQuery = async (
