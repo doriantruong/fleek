@@ -7,6 +7,7 @@ import { useState } from "react"
 import { HttpTypes } from "@medusajs/types"
 import { SellerProps } from "@/types/seller"
 import { MessageIcon } from "@/icons"
+import { getImageUrl } from "@/lib/helpers/get-image-url"
 
 const TALKJS_APP_ID = process.env.NEXT_PUBLIC_TALKJS_APP_ID || ""
 
@@ -65,7 +66,8 @@ export const Chat = ({
                 id: seller?.id || "",
                 name: seller?.name || "",
                 email: seller?.email || null,
-                photoUrl: seller.photo || "/talkjs-placeholder.jpg",
+                photoUrl:
+                  getImageUrl(seller.photo) || "/talkjs-placeholder.jpg",
                 role: "seller",
               }}
             />

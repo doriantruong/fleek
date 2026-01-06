@@ -1,4 +1,5 @@
 import Image from "next/image"
+import { getImageUrl } from "@/lib/helpers/get-image-url"
 
 export const SellerAvatar = ({
   photo = "",
@@ -9,9 +10,11 @@ export const SellerAvatar = ({
   size?: number
   alt?: string
 }) => {
-  return photo ? (
+  const resolvedPhoto = getImageUrl(photo)
+
+  return resolvedPhoto ? (
     <Image
-      src={decodeURIComponent(photo)}
+      src={resolvedPhoto}
       alt={alt}
       width={size}
       height={size}

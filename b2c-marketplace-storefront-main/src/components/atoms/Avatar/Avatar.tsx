@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils"
 import Image from "next/image"
 import { ProfileIcon } from "@/icons"
+import { getImageUrl } from "@/lib/helpers/get-image-url"
 
 interface AvatarProps {
   src?: string
@@ -25,11 +26,21 @@ export function Avatar({
   }
 
   if (src) {
+    const resolvedSrc = getImageUrl(src)
+
+    if (!resolvedSrc) {
+      return (
+        <div className={cn(baseClasses, sizeClasses[size], className)}>
+          {initials || <ProfileIcon />}
+        </div>
+      )
+    }
+
     return (
       <Image
         width={150}
         height={150}
-        src={src}
+        src={resolvedSrc}
         alt={alt || "Avatar"}
         className={cn(
           baseClasses,

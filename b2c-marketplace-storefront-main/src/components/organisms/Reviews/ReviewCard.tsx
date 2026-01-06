@@ -3,6 +3,7 @@ import { StarIcon } from "@/icons"
 import { Review } from "@/lib/data/reviews"
 import { cn } from "@/lib/utils"
 import Image from "next/image"
+import { getImageUrl } from "@/lib/helpers/get-image-url"
 
 export const ReviewCard = ({ review }: { review: Review }) => {
   return (
@@ -14,7 +15,7 @@ export const ReviewCard = ({ review }: { review: Review }) => {
         {review.seller.photo ? (
           <Image
             alt="Seller photo"
-            src={review.seller.photo}
+            src={getImageUrl(review.seller.photo)}
             className="size-8 border border-base-primary rounded-xs"
           />
         ) : null}
