@@ -604,6 +604,25 @@ export async function createSellerProducts(
 
   const toInsert = productsToInsert.map((p) => ({
     ...p,
+    // Bảo đảm mỗi biến thể có thêm giá USD để khớp với locale us
+    variants: p.variants.map((variant) => {
+      const hasUsd = variant.prices?.some((pr) => pr.currency_code === 'usd')
+      const baseAmount = variant.prices?.[0]?.amount ?? 0
+
+      return {
+        ...variant,
+        prices: hasUsd
+          ? variant.prices
+          : [
+              ...(variant.prices || []),
+              {
+                currency_code: 'usd',
+                amount: baseAmount
+              }
+            ]
+      }
+    }),
+    supported_countries: ['us', 'vn'],
     categories: [
       {
         id: randomCategory().id
