@@ -6,7 +6,8 @@ import { DayPicker } from "react-day-picker"
 import { ChevronLeft, ChevronRight } from "@medusajs/icons"
 import { clx, IconButton } from "@medusajs/ui"
 
-import "react-day-picker/src/style.css"
+// Use compiled CSS to avoid source-map resolution issues in dev
+import "react-day-picker/dist/style.css"
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>
 
