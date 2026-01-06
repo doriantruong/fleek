@@ -1,21 +1,21 @@
 const links = {
   customerServices: [
-    { label: 'FAQs', path: '#' },
-    { label: 'Track Order', path: '#' },
-    { label: 'Returns', path: '#' },
-    { label: 'Delivery', path: '#' },
-    { label: 'Payment', path: '#' },
+    { label: "FAQs", path: "https://github.com/doriantruong/fleek-marketplace" },
+    { label: "Track Order", path: "https://github.com/doriantruong/fleek-marketplace" },
+    { label: "Returns", path: "https://github.com/doriantruong/fleek-marketplace" },
+    { label: "Delivery", path: "https://github.com/doriantruong/fleek-marketplace" },
+    { label: "Payment", path: "https://github.com/doriantruong/fleek-marketplace" },
   ],
   about: [
-    { label: 'About us', path: '#' },
-    { label: 'Blog', path: '#' },
-    { label: 'Privacy Policy', path: '#' },
-    { label: 'Terms & Conditions', path: '#' },
+    { label: "About us", path: "https://github.com/doriantruong/fleek-marketplace" },
+    { label: "Blog", path: "https://github.com/doriantruong/fleek-marketplace" },
+    { label: "Privacy Policy", path: "https://github.com/doriantruong/fleek-marketplace" },
+    { label: "Terms & Conditions", path: "https://github.com/doriantruong/fleek-marketplace" },
   ],
   connect: [
-    { label: 'Facebook', path: 'https://facebook.com' },
-    { label: 'Instagram', path: 'https://instagram.com' },
-    { label: 'LinekdIn', path: 'https://linkedin.com' },
+    { label: "Facebook", path: "https://github.com/doriantruong/fleek-marketplace" },
+    { label: "Instagram", path: "https://github.com/doriantruong/fleek-marketplace" },
+    { label: "LinkedIn", path: "https://github.com/doriantruong/fleek-marketplace" },
   ],
 };
 
