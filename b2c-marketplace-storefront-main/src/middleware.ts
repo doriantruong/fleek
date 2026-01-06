@@ -83,16 +83,13 @@ async function getCountryCode(
   regionMap: Map<string, HttpTypes.StoreRegion | number>
 ) {
   try {
+    // Always prefer URL if đã có locale, còn lại cưỡng ép DEFAULT_REGION để tránh tự động chuyển theo IP
     let countryCode;
-
-    const vercelCountryCode = request.headers.get('x-vercel-ip-country')?.toLowerCase();
 
     const urlCountryCode = request.nextUrl.pathname.split('/')[1]?.toLowerCase();
 
     if (urlCountryCode && regionMap.has(urlCountryCode)) {
       countryCode = urlCountryCode;
-    } else if (vercelCountryCode && regionMap.has(vercelCountryCode)) {
-      countryCode = vercelCountryCode;
     } else if (regionMap.has(DEFAULT_REGION)) {
       countryCode = DEFAULT_REGION;
     } else if (regionMap.keys().next().value) {

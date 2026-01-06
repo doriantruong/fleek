@@ -32,7 +32,8 @@ import {
 
 import { productsToInsert } from './seed-products'
 
-const countries = ['be', 'de', 'dk', 'se', 'fr', 'es', 'it', 'pl', 'cz', 'nl']
+// Use VN as the default region for seeding (matches sample product pricing)
+const countries = ['vn']
 
 export async function createAdminUser(container: MedusaContainer) {
   const authService = container.resolve(Modules.AUTH)
@@ -127,7 +128,7 @@ export async function createRegions(container: MedusaContainer) {
 
   // If the default region already exists (from migrations), reuse it to keep seed idempotent.
   const [existingRegion] = await regionModuleService.listRegions({
-    name: 'Europe'
+    name: 'Vietnam'
   })
 
   if (existingRegion) {
@@ -140,8 +141,8 @@ export async function createRegions(container: MedusaContainer) {
     input: {
       regions: [
         {
-          name: 'Europe',
-          currency_code: 'eur',
+          name: 'Vietnam',
+          currency_code: 'vnd',
           countries,
           payment_providers: ['pp_system_default']
         }
@@ -369,6 +370,23 @@ export async function createSellerStockLocation(
   sellerId: string,
   salesChannelId: string
 ) {
+  const query = container.resolve(ContainerRegistrationKeys.QUERY)
+
+  // Re-use existing stock location if it already exists to keep the seed idempotent
+  const {
+    data: [existing]
+  } = await query.graph({
+    entity: 'stock_location',
+    fields: ['*', 'fulfillment_sets.*'],
+    filters: {
+      name: `Stock Location for seller ${sellerId}`
+    }
+  })
+
+  if (existing) {
+    return existing
+  }
+
   const link = container.resolve(ContainerRegistrationKeys.LINK)
   const {
     result: [stock]
@@ -426,8 +444,6 @@ export async function createSellerStockLocation(
     }
   })
 
-  const query = container.resolve(ContainerRegistrationKeys.QUERY)
-
   const {
     data: [stockLocation]
   } = await query.graph({
@@ -446,6 +462,28 @@ export async function createServiceZoneForFulfillmentSet(
   sellerId: string,
   fulfillmentSetId: string
 ) {
+  const fulfillmentService = container.resolve(Modules.FULFILLMENT)
+
+  const [existing] = await fulfillmentService.listServiceZones({
+    fulfillment_set: {
+      id: fulfillmentSetId
+    },
+    name: 'Europe'
+  })
+
+  if (existing) {
+    const link = container.resolve(ContainerRegistrationKeys.LINK)
+    await link.create({
+      [SELLER_MODULE]: {
+        seller_id: sellerId
+      },
+      [Modules.FULFILLMENT]: {
+        service_zone_id: existing.id
+      }
+    })
+    return existing
+  }
+
   await createServiceZonesWorkflow.run({
     container,
     input: {
@@ -461,8 +499,6 @@ export async function createServiceZoneForFulfillmentSet(
       ]
     }
   })
-
-  const fulfillmentService = container.resolve(Modules.FULFILLMENT)
 
   const [zone] = await fulfillmentService.listServiceZones({
     fulfillment_set: {
@@ -558,6 +594,9 @@ export async function createSellerProducts(
     { select: ['id', 'name'] }
   )
 
+  // Basic sanity check to help debug missing seed data
+  console.log('Seed products: collections', collections.length, 'categories', categories.length)
+
   const randomCategory = () =>
     categories[Math.floor(Math.random() * categories.length)]
   const randomCollection = () =>
@@ -577,6 +616,8 @@ export async function createSellerProducts(
       }
     ]
   }))
+
+  console.log('Seed products: prepared entries', toInsert.length)
 
   const { result } = await createProductsWorkflow.run({
     container,
