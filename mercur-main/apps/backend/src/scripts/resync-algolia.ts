@@ -25,4 +25,7 @@ export default async function main({ container }) {
   });
 
   console.log("Done");
+
+  // Ensure the process exits after emitting the event
+  process.exit(0);
 }
