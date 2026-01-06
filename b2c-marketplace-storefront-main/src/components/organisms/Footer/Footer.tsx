@@ -11,15 +11,28 @@ export function Footer() {
             Customer services
           </h2>
           <nav className="space-y-3" aria-label="Customer services navigation">
-            {footerLinks.customerServices.map(({ label, path }) => (
-              <LocalizedClientLink
-                key={label}
-                href={path}
-                className="block label-md"
-              >
-                {label}
-              </LocalizedClientLink>
-            ))}
+            {footerLinks.customerServices.map(({ label, path }) => {
+              const isExternal = path.startsWith("http")
+              return isExternal ? (
+                <a
+                  key={label}
+                  href={path}
+                  className="block label-md"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {label}
+                </a>
+              ) : (
+                <LocalizedClientLink
+                  key={label}
+                  href={path}
+                  className="block label-md"
+                >
+                  {label}
+                </LocalizedClientLink>
+              )
+            })}
           </nav>
         </div>
 
@@ -27,15 +40,28 @@ export function Footer() {
         <div className="p-6 border rounded-sm">
           <h2 className="heading-sm text-primary mb-3 uppercase">About</h2>
           <nav className="space-y-3" aria-label="About navigation">
-            {footerLinks.about.map(({ label, path }) => (
-              <LocalizedClientLink
-                key={label}
-                href={path}
-                className="block label-md"
-              >
-                {label}
-              </LocalizedClientLink>
-            ))}
+            {footerLinks.about.map(({ label, path }) => {
+              const isExternal = path.startsWith("http")
+              return isExternal ? (
+                <a
+                  key={label}
+                  href={path}
+                  className="block label-md"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {label}
+                </a>
+              ) : (
+                <LocalizedClientLink
+                  key={label}
+                  href={path}
+                  className="block label-md"
+                >
+                  {label}
+                </LocalizedClientLink>
+              )
+            })}
           </nav>
         </div>
 
