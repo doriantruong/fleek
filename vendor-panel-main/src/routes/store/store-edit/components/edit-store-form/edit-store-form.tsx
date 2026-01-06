@@ -151,8 +151,8 @@ export const EditStoreForm = ({ seller }: { seller: StoreVendor }) => {
   return (
     <RouteDrawer.Form form={form}>
       <KeyboundForm onSubmit={handleSubmit} className="flex h-full flex-col">
-        <RouteDrawer.Body className="flex-1 min-h-0 overflow-y-auto">
-          <div className="flex flex-col gap-y-8 pb-4">
+        <RouteDrawer.Body className="flex-1 min-h-0 overflow-y-auto pb-24">
+          <div className="flex flex-col gap-y-8 pb-2">
             <Form.Field
               name="media"
               control={form.control}
@@ -234,7 +234,7 @@ export const EditStoreForm = ({ seller }: { seller: StoreVendor }) => {
             />
           </div>
         </RouteDrawer.Body>
-        <RouteDrawer.Footer className="sticky bottom-0 bg-ui-bg-base border-t border-ui-border px-4 py-3">
+        <RouteDrawer.Footer className="sticky bottom-0 z-10 bg-ui-bg-base border-t border-ui-border px-4 py-3">
           <div className="flex items-center justify-end gap-x-2">
             <RouteDrawer.Close asChild>
               <Button size="small" variant="secondary">
