@@ -33,6 +33,11 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
+        hostname: "mercur-backend-v3th.onrender.com",
+        pathname: "/static/**",
+      },
+      {
+        protocol: "https",
         hostname: "i.imgur.com",
       },
       {
