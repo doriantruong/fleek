@@ -3,7 +3,7 @@ import Medusa from '@medusajs/js-sdk';
 export const backendUrl = __BACKEND_URL__ ?? '/';
 export const publishableApiKey = __PUBLISHABLE_API_KEY__ ?? '';
 
-const token = window.localStorage.getItem('medusa_auth_token') || '';
+const getAuthToken = () => window.localStorage.getItem('medusa_auth_token') || '';
 
 const decodeJwt = (token: string) => {
   try {
@@ -39,6 +39,14 @@ export const importProductsQuery = async (file: File) => {
   const formData = new FormData();
   formData.append('file', file);
 
+  const token = getAuthToken();
+
+  if (isTokenExpired(token)) {
+    localStorage.removeItem('medusa_auth_token');
+    window.location.href = '/login?reason=Unauthorized';
+    return null;
+  }
+
   return await fetch(`${backendUrl}/vendor/products/import`, {
     method: 'POST',
     body: formData,
@@ -56,6 +64,14 @@ export const uploadFilesQuery = async (files: any[]) => {
 
   for (const { file } of files) {
     formData.append('files', file);
+  }
+
+  const token = getAuthToken();
+
+  if (isTokenExpired(token)) {
+    localStorage.removeItem('medusa_auth_token');
+    window.location.href = '/login?reason=Unauthorized';
+    throw new Error('Unauthorized');
   }
 
   const res = await fetch(`${backendUrl}/vendor/uploads`, {
@@ -95,7 +111,15 @@ export const fetchQuery = async (
     headers?: { [key: string]: string };
   }
 ) => {
-  const bearer = (await window.localStorage.getItem('medusa_auth_token')) || '';
+  const token = getAuthToken();
+
+  if (isTokenExpired(token)) {
+    localStorage.removeItem('medusa_auth_token');
+    window.location.href = '/login?reason=Unauthorized';
+    return;
+  }
+
+  const bearer = token;
   const params = Object.entries(query || {}).reduce((acc, [key, value]) => {
     if (value !== null && value !== undefined && value !== '') {
       if (Array.isArray(value)) {
